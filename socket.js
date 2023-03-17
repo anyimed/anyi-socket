@@ -2,57 +2,50 @@ const { Server } = require("socket.io");
 const { game } = require("./define");
 const app = require("./app");
 let io = null
-function connect(socket) {
+function init(socket) {
   console.log('a user connected', socket.id);
-  socket.on("req-game", function (req) {
-    if (socket.rooms.has("system")) {
-      io.to("system").emit("res-game", {
-        current: game.current + 1,
-        rows: game.lists
-      });
-    } 
-    if (socket.rooms.has("player")) {
-      io.to("player").emit("res-game", {
-        current: game.current + 1,
-        row: game.lists[game.current]
-      });
-    }
-
-
+  io.to("controller").to("monitor").emit("setting playing", { status: game.playing });
+  io.to("controller").to("player").emit("setting voting", { status: game.voting });
+  
+  socket.on("count-player", function (req) {
+    io.to("controller").emit("count-player", {
+      player: io.sockets.adapter.rooms.get('player') ? io.sockets.adapter.rooms.get('player').size : 0,
+    });
   })
-  socket.on("req-vote", function (req) {
+  socket.on("game", function (req) {
+    io.to("controller").emit("game", {
+      current: game.current,
+      rows: game.lists
+    });
+    io.to("player").emit("game", {
+      current: game.current,
+      row: game.lists[game.current]
+    });
+  })
+  socket.on("vote", function (req) {
+    console.log(game.lists[game.current].answer[req.index])
     game.lists[game.current].answer[req.index].score.vote++
+    console.log(game.lists[game.current].answer[req.index])
     app.calculates(game.lists[game.current])
-    // console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
-    io.to("system").emit("voting", { current: (parseInt(game.current) + 1),row: game.lists[game.current], sum: game.lists[game.current].sum });
+    io.to("controller").emit("vote", { current: game.current, row: game.lists[game.current], sum: game.lists[game.current].sum });
   })
-  // socket.on("join", function (roomName) {
-  //   // console.log(io.sockets.adapter.rooms.size)
-  //   // console.log(io.engine.clientsCount)
-  //   // console.log(io.sockets.sockets.length)
-  //   // var numClients = io.sockets.adapter.rooms[roomName].size;
-  //   // if (numClients == 0) {
-  //   //   socket.join(roomName);
-  //   // } else if (numClients == 1) {
-  //   //   socket.join(roomName);
-  //   // } else {
-  //   //   console.log("More than 2 users.");
-  //   // }
-
-
-  //   socket.join(userId);
-
-  //   // and then later
-  //   io.to(userId).emit("hi");
-  // });
-  // socket.on("ping", (count) => {
-  //   console.log(count);
-  // });
+  socket.on("setting playing", function (req) {
+    game.playing = req.status
+    console.log("DASDsa")
+    io.to("controller").to("monitor").emit("setting playing", { status: game.playing });
+  })
+  socket.on("setting voting", function (req) {
+    game.voting = req.status
+    console.log("DASDsasss")
+    io.to("controller").to("player").emit("setting voting", { status: game.voting });
+  })
   socket.on('disconnect', () => {
+    io.to("controller").emit("count-player", {
+      player: io.sockets.adapter.rooms.get('player') ? io.sockets.adapter.rooms.get('player').size : 0,
+    });
     console.log('user disconnected');
   });
 }
-function disconnect() { }
 
 module.exports = httpServer => {
   io = new Server(httpServer, {
@@ -61,12 +54,15 @@ module.exports = httpServer => {
     }
   });
   io.on("connection", (socket) => {
-    connect(socket)
-    disconnect(socket)
     socket.on('join', function (req) {
-      console.log(req)
       socket.join(req.room);
+      if (req.room == "player") {
+        io.to("controller").emit("count-player", {
+          player: io.sockets.adapter.rooms.get('player') ? io.sockets.adapter.rooms.get('player').size : 0,
+        });
+      }
     });
+    init(socket)
   });
   return io
 }
