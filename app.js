@@ -37,9 +37,9 @@ app.use(function (req, res, next) {
 });
 
 const web = require('./routes/web');
-const service = require('./routes/service');
-
 app.use('/web', web);
+
+const service = require('./routes/service');
 app.use('/service', service);
 
 function calculates(game) {
@@ -56,7 +56,7 @@ exports.calculates = calculates
 
 httpServer.listen(PORT, () => {
   const { game } = require("./define");
-  game.lists.forEach(v => {
+  game.data.lists.forEach(v => {
     calculates(v)
   });
   console.log(`Listening on ${PORT}`)
