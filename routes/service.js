@@ -72,6 +72,10 @@ router.all("/load/:filename", async function (req, res, next) {
         } else {
           response.status = true
           game.data = JSON.parse(data)
+          const app = require("../app");
+          game.data.lists.forEach(v => {
+            app.calculates(v)
+          });
         }
         return res.json(response)
       });
