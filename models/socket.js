@@ -13,8 +13,8 @@ function voting_countdown() {
     vt--
     if (vt <= 0) {
       interval ? clearInterval(interval) : ''
-      io.to("controller").to("player").to("monitor").emit("voted", { status: game.data.voting, type: type });
       game.data.status = "voted"
+      io.to("controller").to("player").to("monitor").emit("voted", { status: game.data.status, type: type });
       return
     }
     io.to("controller").to("player").to("monitor").emit("voting countdown", { t: vt, type: type });
@@ -36,13 +36,17 @@ function init(socket) {
       tt--
       if (tt <= 0) {
         interval ? clearInterval(interval) : ''
-        io.to("controller").to("player").to("monitor").emit("voting", { status: game.data.voting });
-        status = "voting"
-        voting_countdown()
+        io.to("controller").to("player").to("monitor").emit("voting", { status: game.data.status });
+        game.data.status = "voting"
+        // voting_countdown()
         return
       }
       io.to("controller").to("player").to("monitor").emit("game countdown", { t: tt });
     }, 1000)
+  })
+  socket.on("stop voting", function (req) {
+    let type = "voting"
+    io.to("controller").to("player").to("monitor").emit("voted", { status: game.data.status, type: type });
   })
   socket.on("vote", function (req) {
     game.data.lists[game.data.current].answer[req.index].score.vote++
