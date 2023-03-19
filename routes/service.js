@@ -13,6 +13,7 @@ router.all("/reset", async function (req, res, next) {
   io.sockets.emit("reset", {
     status:true
   });
+  return res.json({ "status": true })
 });
 
 router.all("/save/:filename", async function (req, res, next) {
