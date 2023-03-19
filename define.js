@@ -5,7 +5,7 @@ const game = {
       countdown: 3,
       voting: 5
     },
-    status: "",
+    status: null,
     lists:
       [
         {
@@ -61,5 +61,4 @@ const game = {
       ]
   }
 }
-
 module.exports = { game };

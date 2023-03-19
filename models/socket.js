@@ -1,6 +1,6 @@
 const { Server } = require("socket.io");
-const { game } = require("./define");
-const app = require("./app");
+const { game } = require("../define");
+const app = require("../app");
 let io = null
 let interval = null
 function voting_countdown() {
@@ -21,7 +21,7 @@ function voting_countdown() {
   }, 1000)
 }
 function init(socket) {
-  console.log('a user connected', socket.id);
+  // console.log('a user connected', socket.id);
   socket.on("start voting", function (req) {
     game.data.current = req.index
     interval ? clearInterval(interval) : ''

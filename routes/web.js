@@ -6,19 +6,18 @@ moment.tz.setDefault("Asia/Bangkok");
 // const { AssetRegistration, AssetBorrowReturn, AssetBorrowReturnDetail, AssetAcceptCut } = require('../controller/acf/AssetRegistration');
 
 router.all("/status", async function (req, res, next) {
-	// var now = moment().tz('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss');
-	var now = moment().format('YYYY-MM-DD HH:mm:ss');
-	let player = io.sockets.adapter.rooms.get('player') ? io.sockets.adapter.rooms.get('player').size : 0
-	let controller = io.sockets.adapter.rooms.get('controller') ? io.sockets.adapter.rooms.get('controller').size : 0
-	let monitor = io.sockets.adapter.rooms.get('monitor') ? io.sockets.adapter.rooms.get('monitor').size : 0
-	let gamelist = ``
-	game.data.lists.forEach((v, i) => {
-		console.log(v.answer)
-		let list = ``
-		v.answer.forEach((v2, i2) => {
-			list += `<li class="list-group-item">${i2} : ${v2.text}<span style="float:right">คะแนน : ${v2.score.default} | ${v2.score.vote} ( รวม ${v2.score.total} | ${v2.score.percent}%)</span></li>`
-		})
-		gamelist += `<div class="col-12">
+  // var now = moment().tz('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss');
+  var now = moment().format('YYYY-MM-DD HH:mm:ss');
+  let player = io.sockets.adapter.rooms.get('player') ? io.sockets.adapter.rooms.get('player').size : 0
+  let controller = io.sockets.adapter.rooms.get('controller') ? io.sockets.adapter.rooms.get('controller').size : 0
+  let monitor = io.sockets.adapter.rooms.get('monitor') ? io.sockets.adapter.rooms.get('monitor').size : 0
+  let gamelist = ``
+  game.data.lists.forEach((v, i) => {
+    let list = ``
+    v.answer.forEach((v2, i2) => {
+      list += `<li class="list-group-item">${i2} : ${v2.text}<span style="float:right">คะแนน : ${v2.score.default} | ${v2.score.vote} ( รวม ${v2.score.total} | ${v2.score.percent}%)</span></li>`
+    })
+    gamelist += `<div class="col-12">
 									<div class="card" >
 										<div class="card-body">
 											<h5 class="card-title">${i} : ${v.question}</h5>
@@ -26,9 +25,9 @@ router.all("/status", async function (req, res, next) {
 										</div>
 									</div>
 								</div>`
-	})
+  })
 
-	let html = `
+  let html = `
     <!DOCTYPE html>
       <html lang="en">
         <head>
@@ -56,7 +55,6 @@ router.all("/status", async function (req, res, next) {
                   <th>เครื่องควบคุม</th>
                   <th>มอนิเตอร์</th>
                   <th>ทั้งหมด</th>
-
                   <th>เกมส์ปัจุบัน</th>
                   <th>countdown time</th>
                   <th>vote time</th>
@@ -70,7 +68,6 @@ router.all("/status", async function (req, res, next) {
                     <td>${controller}</td>
                     <td>${monitor}</td>
                     <td>${io.engine.clientsCount}</td>
-
                     <td>${parseInt(game.data.current) + 1}</td>
                     <td>${game.data.time.countdown}</td>
                     <td>${game.data.time.voting}</td>
@@ -87,7 +84,7 @@ router.all("/status", async function (req, res, next) {
         </body>
       </html>
     `
-	return res.send(html);
+  return res.send(html);
 });
 
 module.exports = router;

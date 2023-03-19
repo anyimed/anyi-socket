@@ -118,10 +118,7 @@ router.all("/current/:id", async function (req, res, next) {
     current: game.data.current,
     row: game.data.lists[game.data.current]
   });
-
-
   // }
-
   return res.json({ "current": game.data.current, "status": true })
 });
 module.exports = router;

@@ -10,8 +10,7 @@ app.use(express.json())
 const { createServer } = require("http");
 const httpServer = createServer(app);
 /********************************/
-const io = require("./socket")(httpServer);
-// console.log(io)
+const io = require("./models/socket")(httpServer);
 exports.io = io
 
 /********************************/

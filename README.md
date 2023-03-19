@@ -1,3 +1,3 @@
 "# anyi-socket"
-POWER BY ANYI 
-Cretor Taweepong mekchai 
+# POWER BY ANYI 
+# Cretor Taweepong mekchai 
