@@ -8,6 +8,11 @@ const fs = require('fs');
 
 // console.log(content);
 
+router.all("/reset", async function (req, res, next) {
+  game.data.current = 0
+  game.time.status = null
+  return res.json({ "status": true })
+});
 
 router.all("/save/:filename", async function (req, res, next) {
   const path = `./json/${req.params.filename}.json`
