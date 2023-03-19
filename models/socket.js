@@ -81,7 +81,7 @@ module.exports = httpServer => {
           player: io.sockets.adapter.rooms.get('player') ? io.sockets.adapter.rooms.get('player').size : 0,
         });
       }
-      socket.emit("status", { status: game.data.status });
+      socket.emit("status", { status: game.data.status,current: game.data.current });
       /*---------------------------*/
       const obj = req.room == "controller" ? {
         current: game.data.current,
