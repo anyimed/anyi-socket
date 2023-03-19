@@ -101,10 +101,6 @@ router.all("/status", async function (req, res, next) {
           </div></div>
         </body>
       </html>
-      <script>
-      setTimeout(()=>{window.location.reload()},1000)
-      
-      </script>
     `
     // console.log(html)
     return res.send(html);

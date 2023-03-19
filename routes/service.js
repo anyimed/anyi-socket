@@ -143,4 +143,8 @@ router.all("/current/:id", async function (req, res, next) {
   // }
   return res.json({ "current": game.data.current, "status": true })
 });
+
+router.post("/data/game", async function (req, res, next) {
+  return res.json({ "game": game, "status": true })
+});
 module.exports = router;
