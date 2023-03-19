@@ -5,7 +5,7 @@ const game = {
       countdown: 3,
       voting: 5
     },
-    status: "ready",
+    status: null,
     lists:
       [
         {
