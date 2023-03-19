@@ -3,7 +3,7 @@ const { io } = require("../app");
 const { game } = require("../define");
 const moment = require('moment-timezone');
 moment.tz.setDefault("Asia/Bangkok");
-var fs = require('fs');
+const fs = require('fs');
 // var content = fs.writeFileSync('./json/test.json');
 
 // console.log(content);
@@ -65,6 +65,28 @@ router.all("/load/:filename", async function (req, res, next) {
         } else {
           response.status = true
           game.data = JSON.parse(data)
+        }
+        return res.json(response)
+      });
+    }
+  })
+});
+router.all("/read/:filename", async function (req, res, next) {
+  const path = `./json/${req.params.filename}`
+  fs.access(path, fs.F_OK, (err) => {
+    let response = { status: false }
+    if (err) {
+      response.err = err
+      return res.json(response)
+    } else {
+      fs.readFile(path, 'utf8', function (err, data) {
+        // Display the file content
+        if (err) {
+          response.err = err
+        } else {
+          response.status = true
+          data = JSON.parse(data)
+          response.data = data
         }
         return res.json(response)
       });

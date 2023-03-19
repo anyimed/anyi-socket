@@ -4,6 +4,7 @@ const { game } = require("../define");
 const moment = require('moment-timezone');
 moment.tz.setDefault("Asia/Bangkok");
 // const { AssetRegistration, AssetBorrowReturn, AssetBorrowReturnDetail, AssetAcceptCut } = require('../controller/acf/AssetRegistration');
+const fs = require('fs');
 
 router.all("/status", async function (req, res, next) {
   // var now = moment().tz('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss');
@@ -12,12 +13,22 @@ router.all("/status", async function (req, res, next) {
   let controller = io.sockets.adapter.rooms.get('controller') ? io.sockets.adapter.rooms.get('controller').size : 0
   let monitor = io.sockets.adapter.rooms.get('monitor') ? io.sockets.adapter.rooms.get('monitor').size : 0
   let gamelist = ``
-  game.data.lists.forEach((v, i) => {
-    let list = ``
-    v.answer.forEach((v2, i2) => {
-      list += `<li class="list-group-item">${i2} : ${v2.text}<span style="float:right">คะแนน : ${v2.score.default} | ${v2.score.vote} ( รวม ${v2.score.total} | ${v2.score.percent}%)</span></li>`
-    })
-    gamelist += `<div class="col-12">
+  let file_element = ``
+  await fs.readdir(`./json/`, function (err, files) {
+    if (err) {
+      file_element = `<tr>td colspan=9>Could not list the directory.${err} </td></tr>`;
+    }
+    else {
+      files.forEach(function (file, index) {
+        file_element += `<tr><td colspan=9><a href="${req.headers.host}/service/read/${file}" target="blank">${file}</a></td></tr>`
+      });
+    }
+    game.data.lists.forEach((v, i) => {
+      let list = ``
+      v.answer.forEach((v2, i2) => {
+        list += `<li class="list-group-item">${i2} : ${v2.text}<span style="float:right">คะแนน : ${v2.score.default} | ${v2.score.vote} ( รวม ${v2.score.total} | ${v2.score.percent}%)</span></li>`
+      })
+      gamelist += `<div class="col-12">
 									<div class="card" >
 										<div class="card-body">
 											<h5 class="card-title">${i} : ${v.question}</h5>
@@ -25,9 +36,9 @@ router.all("/status", async function (req, res, next) {
 										</div>
 									</div>
 								</div>`
-  })
+    })
 
-  let html = `
+    let html = `
     <!DOCTYPE html>
       <html lang="en">
         <head>
@@ -73,6 +84,10 @@ router.all("/status", async function (req, res, next) {
                     <td>${game.data.time.voting}</td>
                     <td>${game.data.status ? game.data.status : '-'}</td>
                   </tr>
+                  <tr>
+                    <td colspan=9>Storage files</td>
+                  </tr>
+                  ${file_element}
               </tbody>
             </table>
           </div>
@@ -84,7 +99,10 @@ router.all("/status", async function (req, res, next) {
         </body>
       </html>
     `
-  return res.send(html);
+    // console.log(html)
+    return res.send(html);
+  });
+
 });
 
 module.exports = router;
