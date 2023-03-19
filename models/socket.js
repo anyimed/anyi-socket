@@ -46,7 +46,7 @@ function init(socket) {
   })
   socket.on("stop voting", function (req) {
     game.data.status = "voted"
-    io.to("controller").to("player").to("monitor").emit("voted", { status: game.data.status });
+    io.to("controller").to("player").to("monitor").emit("voted", { status: game.data.status, row: game.data.lists[game.data.current] });
   })
   socket.on("vote", function (req) {
     game.data.lists[game.data.current].answer[req.index].score.vote++
