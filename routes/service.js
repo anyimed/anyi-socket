@@ -10,7 +10,7 @@ const fs = require('fs');
 
 router.all("/reset", async function (req, res, next) {
   game.data.current = 0
-  game.time.status = null
+  game.data.status = null
   return res.json({ "status": true })
 });
 
