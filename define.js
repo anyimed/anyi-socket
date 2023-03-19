@@ -35,7 +35,7 @@ const game = {
             { text: 'มาตรงเวลา', score: { default: 7, vote: 0 } },
             { text: 'ทำกิจกรรม', score: { default: 20.3, vote: 0 } },
             { text: 'ถามคำถาม', score: { default: 9.1, vote: 0 } },
-            { text: 'แบ่งปันประสบการณ', score: { default: 18.2, vote: 0 } }
+            { text: 'แบ่งปันประสบการณ์', score: { default: 18.2, vote: 0 } }
           ]
         },
         {
@@ -51,7 +51,7 @@ const game = {
         {
           "question": 'ประโยชน์ของทีมที่มีความหลากหลายในการทำงาน',
           "answer": [
-            { text: 'มีไอเดียร์หลากหลาย , มุมมองใหม่ๆ', score: { default: 51.8, vote: 0 } },
+            { text: 'มีไอเดียหลากหลาย , มุมมองใหม่ๆ', score: { default: 51.8, vote: 0 } },
             { text: 'ดึงดูดบุคลากรเข้ามาได้ง่ายขึ้น', score: { default: 8, vote: 0 } },
             { text: 'ปรับปรุงภาพลักษณ์องค์กร', score: { default: 15, vote: 0 } },
             { text: 'ช่วยเพิ่มความผูกพันของพนักงาน', score: { default: 10, vote: 0 } },
