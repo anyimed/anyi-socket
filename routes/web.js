@@ -25,9 +25,12 @@ router.all("/status", async function (req, res, next) {
     }
     game.data.lists.forEach((v, i) => {
       let list = ``
+      let total = 0
       v.answer.forEach((v2, i2) => {
+        total += parseInt(v2.score.percent);
         list += `<li class="list-group-item">${i2} : ${v2.text}<span style="float:right">คะแนน : ${v2.score.default} | ${v2.score.vote} ( รวม ${v2.score.total} | ${v2.score.percent}%)</span></li>`
       })
+      list += `<li class="list-group-item">รวมเปอร์เซ็น<span style="float:right">${total}%</span></li>`
       gamelist += `<div class="col-12">
 									<div class="card" >
 										<div class="card-body">
