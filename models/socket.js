@@ -64,6 +64,7 @@ function init(socket) {
     });
     console.log('user disconnected');
   });
+  
 }
 
 module.exports = httpServer => {

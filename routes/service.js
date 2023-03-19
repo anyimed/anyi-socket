@@ -9,9 +9,10 @@ const fs = require('fs');
 // console.log(content);
 
 router.all("/reset", async function (req, res, next) {
-  game.data.current = 0
   game.data.status = null
-  return res.json({ "status": true })
+  io.sockets.emit("reset", {
+    status:true
+  });
 });
 
 router.all("/save/:filename", async function (req, res, next) {
