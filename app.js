@@ -48,7 +48,7 @@ function calculates(game) {
     game.sum += v.score.total
   });
   game.answer.forEach((v, i) => {
-    v.score.percent = Math.round((v.score.total / game.sum) * 100)
+    v.score.percent = Math.round((v.score.total / game.sum) * 100).toFixed(0)
     v.score.percent2digit = ((v.score.total / game.sum) * 100).toFixed(2)
   });
 }
