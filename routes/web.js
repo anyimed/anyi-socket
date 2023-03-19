@@ -20,7 +20,7 @@ router.all("/status", async function (req, res, next) {
     }
     else {
       files.forEach(function (file, index) {
-        file_element += `<tr><td colspan=9><a href="${req.headers.host}/service/read/${file}" target="blank">${file}</a></td></tr>`
+        file_element += `<tr><td colspan=9><a href="../../service/read/${file}" target="blank">${file}</a></td></tr>`
       });
     }
     game.data.lists.forEach((v, i) => {
